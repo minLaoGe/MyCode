@@ -1,0 +1,112 @@
+<script src="js/getParameter.js"></script>
+<script>
+    $(function () {
+        $.post("user/nameHeader",{},function (data) {
+            if (data.name!=null){
+                $("#welco").show();
+                var name="欢迎回来,"+data.name;
+                $("#welco").html(name);
+                    $("#registerHref").hide();
+                $("#exit").show();
+                $("#loginHref").hide();
+            }else {
+                $("#welco").hide();
+                $("#loginHref").show();
+                $("#exit").hide();
+                $("#registerHref").show();
+            }
+        });
+        $("#exit").click(function(){
+                $.post("user/exit",{},function () {
+                    location.href="login.html";
+                })
+        }
+
+        )
+    })
+</script>
+<!-- 头部 start -->
+    <header id="header">
+        <div class="top_banner">
+            <img src="images/top_banner.jpg" alt="">
+        </div>
+        <div class="shortcut">
+            <!-- 未登录状态  -->
+            <div class="login_out">
+                <a href="login.html" id="loginHref">登录</a>
+                <a href="register.html" id="registerHref">注册</a>
+                <a href="#" id="exit"  >退出</a>
+            </div>
+
+            <!-- 登录状态  -->
+            <div class="login">
+
+                <span id="welco" >欢迎回来，admin</span>
+                <a href="myfavorite.html" class="collection">我的收藏</a>
+
+            </div>
+        </div>
+        <div class="header_wrap">
+            <div class="topbar">
+                <div class="logo">
+                    <a href="/"><img src="images/logo.jpg" alt=""></a>
+                </div>
+                <div class="search">
+                    <input name="" id="message" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a href="javascript:;" class="search-button" id="search-button">搜索</a>
+                </div>
+                <script>
+                    var rname=null;
+                    rname=$("#message").val();
+                    $(function () {
+                        $("#search-button").click(function () {
+
+                            rname=$("#message").val();
+
+
+                            var cid=getParameter("cid");
+
+                            load(currentPage,cid,rname);
+                        });
+
+                    })
+
+                </script>
+                <div class="hottel">
+                    <div class="hot_pic">
+                        <img src="images/hot_tel.jpg" alt="">
+                    </div>
+                    <div class="hot_tel">
+                        <p class="hot_time">客服热线(9:00-6:00)</p>
+                        <p class="hot_num">400-618-9090</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 end -->
+     <!-- 首页导航 -->
+    <div class="navitem">
+        <ul class="nav" id="ulList">
+
+
+        </ul>
+        <script>
+            $(function () {
+                $.post("Catogory/firstCatogory",{},function (data) {
+                    var head=" <li class=\"nav-active\"><a href=\"index.html\">首页</a></li>";
+                        $("#ulList").append(head);
+                    for (var i = 0; i < data.length; i++) {
+
+                       var str=data[i].cname;
+                        var li="<li><a href='route_list.html?cid="+data[i].cid+"' class='cid'>"+str+"</a></li>";
+                        $("#ulList").append(li);
+
+                    }
+                    var last=" <li><a href=\"favoriterank.html\" id=\"shocan\">收藏排行榜</a></li>";
+                    $("#ulList").append(last);
+                })
+            })
+        </script>
+    </div>
+    
